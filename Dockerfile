@@ -7,8 +7,12 @@ WORKDIR /app
 # Copy go.mod and go.sum to cache dependencies
 COPY go.mod go.sum ./
 
+# Set environment variables for Go
+ENV GO111MODULE=on
+ENV GOPROXY=https://proxy.golang.org,direct
+
 # Download dependencies
-RUN go mod download
+RUN go mod tidy && go mod download
 
 # Copy the application source code
 COPY . .
