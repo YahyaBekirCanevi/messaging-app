@@ -1,9 +1,12 @@
 name: Build and Publish Docker Image
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  create-envfile:
+  build:
     runs-on: ubuntu-18.04
 
     steps:
