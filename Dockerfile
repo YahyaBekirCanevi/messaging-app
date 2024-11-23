@@ -1,4 +1,4 @@
-# Start with the official Go image for development
+# Stage 1: Build
 FROM golang:1.20 as builder
 
 # Set the working directory inside the container
@@ -7,20 +7,16 @@ WORKDIR /app
 # Copy go.mod and go.sum to cache dependencies
 COPY go.mod go.sum ./
 
-# Set environment variables for Go
-ENV GO111MODULE=on
-ENV GOPROXY=https://proxy.golang.org,direct
-
 # Download dependencies
-RUN go mod tidy && go mod download
+RUN go mod download
 
-# Copy the application source code
+# Copy the entire application source code
 COPY . .
 
 # Build the Go application
 RUN go build -o messaging-app
 
-# Use a minimal base image for production
+# Stage 2: Minimal image for production
 FROM debian:bullseye-slim
 
 # Set the working directory for the final image
